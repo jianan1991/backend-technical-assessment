@@ -66,6 +66,11 @@ INSERT INTO crypto_prices (crypto_pair_id, bid_price, ask_price, bid_source, ask
 (2, 3072.50, 3077.50, 'BINANCE', 'BINANCE', '2025-01-15 10:04:50');
 
 -- Jan 16 data with swapped pair IDs (BTC prices in ETH pair, ETH prices in BTC pair)
+-- TODO: Pre-existing data bug (left as-is on request). These 2025-01-16 rows are stored under
+--  crypto_pair_id 2 (ETHUSDT) but carry BTC-level prices (~46,000 USDT), and bid_price is above ask_price
+--  ("crossed"). Being the newest rows, they are the "latest" ETHUSDT quote until the scheduler stores a live
+--  one (about 10s after startup). Until then ETH trades would execute at BTC-level prices. (The first three
+--  2025-01-15 BTCUSDT rows are crossed too.)
 INSERT INTO crypto_prices (crypto_pair_id, bid_price, ask_price, bid_source, ask_source, created_at) VALUES
 (2, 46010.00, 46000.00, 'BINANCE', 'BINANCE', '2025-01-16 10:00:00'),
 (2, 46015.50, 46005.50, 'BINANCE', 'HUOBI', '2025-01-16 10:00:10'),
@@ -98,6 +103,11 @@ INSERT INTO crypto_prices (crypto_pair_id, bid_price, ask_price, bid_source, ask
 (2, 46078.15, 46068.15, 'HUOBI', 'HUOBI', '2025-01-16 10:04:40'),
 (2, 46080.40, 46070.40, 'BINANCE', 'BINANCE', '2025-01-16 10:04:50');
 
+-- TODO: Pre-existing data bug (left as-is on request). These 2025-01-16 rows are stored under
+--  crypto_pair_id 1 (BTCUSDT) but carry ETH-level prices (~3,170 USDT), and bid_price is above ask_price
+--  ("crossed"). They mirror the bid/ask and BTC/ETH swaps that PriceUpdateScheduler used to make (now fixed).
+--  Being the newest rows, they are the "latest" BTCUSDT quote until the scheduler stores a live one (about 10s
+--  after startup). Until then BTC trades would execute at ETH-level prices.
 INSERT INTO crypto_prices (crypto_pair_id, bid_price, ask_price, bid_source, ask_source, created_at) VALUES
 (1, 3105.00, 3100.00, 'BINANCE', 'BINANCE', '2025-01-16 10:00:00'),
 (1, 3107.50, 3102.50, 'BINANCE', 'HUOBI', '2025-01-16 10:00:10'),

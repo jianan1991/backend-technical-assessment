@@ -21,3 +21,14 @@ mybatis:
   type-aliases-package: com.aquariux.technical.assessment.trade.entity
   configuration:
     map-underscore-to-camel-case: true
+
+trading:
+  scheduler:
+    # Turns the exchange price polling job (PriceUpdateScheduler) on or off.
+    enabled: true
+  # Maximum age of the latest stored quote that a trade may execute against (ISO-8601 duration, e.g. PT30S).
+  # Leave empty to disable the staleness check.
+  price-max-age:
+  logging:
+    # Requests slower than this are logged at WARN by RequestTimingAspect (business target: under 200ms).
+    slow-request-threshold: 200ms
